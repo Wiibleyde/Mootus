@@ -1,6 +1,6 @@
 import Grid from 'src/components/Grid/Grid';
 import Keyboard from 'src/components/Keyboard/Keyboard';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import EndScreen from './components/EndScreen';
 import axios from 'axios';
 import { useAtom } from 'jotai';
