@@ -1,4 +1,4 @@
-import { LetterState } from 'src/App';
+import { LetterState } from 'src/types';
 
 interface Props {
     letter: string;

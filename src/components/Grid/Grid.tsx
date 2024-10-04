@@ -1,15 +1,13 @@
-import { maxAttempts } from 'src/App';
+import { maxAttempts } from 'src/config';
 import GridRow from 'src/components/Grid/GridRow.tsx';
 import { generateArray } from 'src/helpers/genericHelper.ts';
+import { useAtomValue } from 'jotai';
+import { atomAttempts, atomResults, atomWord } from 'src/global.ts';
 
-interface Props {
-	length: number;
-	attempts: string[];
-	results: string[];
-}
-
-const Grid: React.FC<Props> = (props) => {
-	const { length, attempts, results } = props;
+const Grid: React.FC = () => {
+	const word = useAtomValue(atomWord);
+	const attempts = useAtomValue(atomAttempts);
+	const results = useAtomValue(atomResults);
 
 	return (
 		<div className="flex justify-center items-center flex-col">
@@ -17,7 +15,7 @@ const Grid: React.FC<Props> = (props) => {
 				generateArray(maxAttempts).map((value) => (
 					<GridRow
 						key={value}
-						length={length}
+						length={word.length}
 						letters={value in attempts ? attempts[value] : ''}
 						result={value in results ? results[value] : ''}
 					/>

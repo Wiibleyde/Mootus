@@ -1,37 +1,27 @@
 import Grid from 'src/components/Grid/Grid';
 import Keyboard from 'src/components/Keyboard/Keyboard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import EndScreen from './components/EndScreen';
 import axios from 'axios';
-
-
-export const maxAttempts = 6;
-
-export enum LetterState {
-	Good = 'G',
-	Wrong = 'W',
-	WrongPlace = 'N'
-}
-
-export enum GameState {
-	Win,
-	Lose,
-	Playing
-}
+import { useAtom } from 'jotai';
+import { atomAttempts, atomGameState, atomResults, atomWord } from './global';
+import { GameState, LetterState } from "./types";
+import { maxAttempts } from 'src/config';
 
 const App = () => {
-	const [word, setWord] = useState<string>('');
-	const [attempts, setAttempts] = useState<Array<string>>([word.substring(0, 1)]);
-	const [results, setResults] = useState<string[]>([]);
-	const [gameState, setGameState] = useState<GameState>(GameState.Playing);
+	const [word, setWord] = useAtom(atomWord);
+	const [attempts, setAttempts] = useAtom(atomAttempts);
+	const [results, setResults] = useAtom(atomResults);
+	const [gameState, setGameState] = useAtom(atomGameState);
 	const [needRefindWord, setNeedRefindWord] = useState<boolean>(true);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [blockFirstLetter, setBlockFirstLetter] = useState<boolean>(true);
 
 	const resetGame = () => {
 		setNeedRefindWord(true);
 		setIsLoading(true);
 		setResults([]);
-		// setBlockFirstLetter(false);
+		setBlockFirstLetter(false);
 	}
 
 	useEffect(() => {
@@ -47,10 +37,11 @@ const App = () => {
 	}, [needRefindWord]);
 
 	const handleKeyPress = (keyElement: string) => {
-		if(attempts[0].length === 1 && keyElement === '⌫') {
+		if(attempts[attempts.length-1].length === 1 && keyElement === '⌫') {
 			return;
 		}
-		if (attempts[0].length === 1 && keyElement === attempts[0]) {
+		if ((attempts[attempts.length-1].length === 1 && keyElement === attempts[attempts.length-1]) && blockFirstLetter) {
+			setBlockFirstLetter(false);
 			return;
 		}
 		const copy = [...attempts];
@@ -63,6 +54,7 @@ const App = () => {
 					return;
 				}
 				const attemptResult = copy[attempts.length - 1].split('').map((letter, index) => {
+					setBlockFirstLetter(true);
 					if (letter === word[index]) {
 						return LetterState.Good;
 					}
@@ -114,7 +106,7 @@ const App = () => {
 				<div>
 					{!isLoading && (
 						<div>
-							<Grid length={word.length} attempts={attempts} results={results} />
+							<Grid />
 							<Keyboard handleKeyPress={handleKeyPress} />
 						</div>
 					)}
@@ -125,7 +117,7 @@ const App = () => {
 					)}
 				</div>
 			)}
-			<EndScreen gameState={gameState} handleReset={resetGame} word={word} />
+			<EndScreen handleReset={resetGame} />
 		</div>
 	);
 };

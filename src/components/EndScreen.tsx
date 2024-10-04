@@ -1,13 +1,16 @@
 import React from "react";
-import { GameState } from "src/App";
+import { GameState } from "src/types";
+import { useAtomValue } from "jotai";
+import { atomGameState, atomWord } from "src/global";
 
 interface Props {
-    gameState: GameState;
     handleReset: () => void;
-    word: string;
 }
 
-const EndScreen: React.FC<Props> = ({ gameState, handleReset, word }) => {
+const EndScreen: React.FC<Props> = ({ handleReset }) => {
+    const word = useAtomValue(atomWord);
+    const gameState = useAtomValue(atomGameState);
+
     switch (gameState) {
         case GameState.Win:
             return (
