@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/Grid/Grid.tsx","./src/components/Grid/GridBox.tsx","./src/components/Grid/GridRow.tsx","./src/components/Keyboard/Keyboard.tsx","./src/components/Keyboard/KeyboardKey.tsx","./src/components/Keyboard/KeyboardRow.tsx","./src/helpers/genericHelper.ts"],"version":"5.6.2"}
