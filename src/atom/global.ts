@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { GameState } from "./types";
+import { GameState } from "../types";
 
 export const atomWord = atom<string>('');
 export const atomAttempts = atom<Array<string>>([]);

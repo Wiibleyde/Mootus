@@ -2,7 +2,7 @@ import { maxAttempts } from 'src/config';
 import GridRow from 'src/components/Grid/GridRow.tsx';
 import { generateArray } from 'src/helpers/genericHelper.ts';
 import { useAtomValue } from 'jotai';
-import { atomAttempts, atomResults, atomWord } from 'src/global.ts';
+import { atomAttempts, atomResults, atomWord } from 'src/atom/global';
 
 const Grid: React.FC = () => {
 	const word = useAtomValue(atomWord);

@@ -1,7 +1,7 @@
 import React from "react";
 import { GameState } from "src/types";
 import { useAtomValue } from "jotai";
-import { atomGameState, atomWord } from "src/global";
+import { atomGameState, atomWord, atomAttempts } from "src/atom/global";
 
 interface Props {
     handleReset: () => void;
@@ -10,13 +10,14 @@ interface Props {
 const EndScreen: React.FC<Props> = ({ handleReset }) => {
     const word = useAtomValue(atomWord);
     const gameState = useAtomValue(atomGameState);
+    const attempts = useAtomValue(atomAttempts);
 
     switch (gameState) {
         case GameState.Win:
             return (
                 <div className="text-center">
 					<h2 className="text-2xl font-bold text-green-600">Gagné !</h2>
-                    <p className="text-lg dark:text-white">Le mot était : {word}</p>
+                    <p className="text-lg dark:text-white">Le mot était : {word} en {attempts.length} essais</p>
                     <RestartButton handleReset={handleReset} />
 				</div>
             )
@@ -24,7 +25,7 @@ const EndScreen: React.FC<Props> = ({ handleReset }) => {
             return (
                 <div className="text-center">
 					<h2 className="text-2xl font-bold text-red-600">Perdu !</h2>
-                    <p className="text-lg dark:text-white">Le mot était : {word}</p>
+                    <p className="text-lg dark:text-white">Le mot était : {word} en {attempts.length} essais</p>
 					<RestartButton handleReset={handleReset} />
 				</div>
             )
